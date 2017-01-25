@@ -8,21 +8,52 @@ function Game() {
   this.currentPlayer;
   this.isBusted;
   this.lastRoll;
+  this.roundTotal;
+  this.rollCount;
 }
 
 Game.prototype.playHandler = function(rollValue) {
+  this.rollCount++;
   this.lastRoll = rollValue;
-  if (rollValue === 1) {
+  if (this.lastRoll === 1) {
     this.isBusted = true;
+    this.roundTotal = 0;
+  } else {
+    this.roundTotal += this.lastRoll;
   }
+}
+
+Game.prototype.turnEnded = function() {
+  return this.isBusted;
 }
 
 Game.prototype.playResult = function() {
   var result;
   if (this.isBusted) {
     result = "Player is Busted!";
+  } else {
+    result =
+      "Player round total is: " + this.roundTotal +
+      " roll count is: " + this.rollCount;
   }
   return result;
+}
+
+Game.prototype.showLastRoll = function() {
+  var result;
+  if (this.rollCount === 0) {
+    result = "";
+  } else {
+    result = this.lastRoll.toString();
+  }
+  return result;
+}
+
+Game.prototype.startNewTurn = function() {
+  this.isBusted = false;
+  this.lastRoll = "";
+  this.roundTotal = 0;
+  this.rollCount = 0;
 }
 
 var pigDice = new Game();
@@ -35,14 +66,21 @@ var rollOneDie  = function() {
 }
 
 // Front End Logic
+function setDisplay() {
+  $("#rollDice").text(pigDice.showLastRoll());
+  $("#rollResult").text(pigDice.playResult());
+}
+
 $(document).ready(function() {
+  pigDice.startNewTurn();
 
   $("#rollButton").click(function() {
     var rollValue = rollOneDie();
-    $("#rollDice").text(rollValue);
     pigDice.playHandler(rollValue);
-    $("#rollResult").text(pigDice.playResult());
-
+    setDisplay();
+    if (pigDice.turnEnded()) {
+      pigDice.startNewTurn()
+    }
   });
 
 });
