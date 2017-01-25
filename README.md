@@ -41,6 +41,6 @@ Copyright (c) 2017 **_Benjamin T. Seaver & Philip Putnam_**
 | Roll value is 1 | 1 | "BUSTED!" |
 | Roll value is 2 | 2 | round total = 2, roll count = 1 |
 | Roll value is 2 | 2 | round total = 4, roll count = 2 |
-| User holds | click hold | player total = 4, roll count = "", round total = "" |
-| Same user rolls "96" | 96 | round total = 96, roll count = 1, Player total = 100, "WINNER!"|
+| User holds | click hold | player total = 4, round total = 0, roll count = 0 |
+| Same user rolls "96" | 96 | round total = 96, roll count = 1, Player Total Score= 100, "WINNER!"|
 | User specifies player | 1 | "player 1 turn" |

@@ -1,6 +1,6 @@
 // Business Logic
 function Player() {
-  this.totalScore;
+  this.totalScore = 0;
 }
 
 function Game() {
@@ -12,7 +12,11 @@ function Game() {
   this.rollCount;
 }
 
-Game.prototype.playHandler = function(rollValue) {
+Game.prototype.showCurrentPlayerTotal = function() {
+  return this.players[this.currentPlayer].totalScore;
+}
+
+Game.prototype.rollHandler = function(rollValue) {
   this.rollCount++;
   this.lastRoll = rollValue;
   if (this.lastRoll === 1) {
@@ -21,6 +25,10 @@ Game.prototype.playHandler = function(rollValue) {
   } else {
     this.roundTotal += this.lastRoll;
   }
+}
+
+Game.prototype.holdHandler = function() {
+  this.players[this.currentPlayer].totalScore += this.roundTotal;
 }
 
 Game.prototype.turnEnded = function() {
@@ -65,22 +73,31 @@ var rollOneDie  = function() {
   return Math.floor((Math.random() * 6) + 1);
 }
 
+
 // Front End Logic
 function setDisplay() {
   $("#rollDice").text(pigDice.showLastRoll());
   $("#rollResult").text(pigDice.playResult());
+  $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
 }
 
 $(document).ready(function() {
   pigDice.startNewTurn();
+  setDisplay();
 
   $("#rollButton").click(function() {
     var rollValue = rollOneDie();
-    pigDice.playHandler(rollValue);
+    pigDice.rollHandler(rollValue);
     setDisplay();
     if (pigDice.turnEnded()) {
-      pigDice.startNewTurn()
+      pigDice.startNewTurn();
     }
+  });
+
+  $("#holdButton").click(function() {
+    pigDice.holdHandler();
+    pigDice.startNewTurn();
+    setDisplay();
   });
 
 });
