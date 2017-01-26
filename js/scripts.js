@@ -71,8 +71,6 @@ Game.prototype.didCurrentPlayerWin = function() {
   return this.roundTotal + this.players[this.currentPlayer].totalScore >= this.scoreToWin;
 }
 
-
-
 var rollOneDie  = function() {
   return Math.floor((Math.random() * 6) + 1);
 }
@@ -83,6 +81,12 @@ var pigDice = new Game(10, 1);
 var startNewGame = false;
 
 function setDisplay() {
+  $(".alertMessage").hide();
+  if (pigDice.turnEnded()) {
+    $("#bustedMessage").show();
+  } else if (pigDice.didCurrentPlayerWin()) {
+    $("#winnerMessage").show();
+  }
   $("#rollDice").text(pigDice.showLastRoll());
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
   var roundStats = pigDice.playResult();
@@ -123,7 +127,6 @@ $(document).ready(function() {
       pigDice.startNewTurn();
       toggleButtons();
     } else if (pigDice.didCurrentPlayerWin()) {
-      $("#congratulations").text("WINNER!");
       startNewGame = true;
       toggleButtons();
     }

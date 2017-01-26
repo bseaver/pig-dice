@@ -1,8 +1,12 @@
-.well {
+.well, .alertMessage {
   text-align: center;
 }
 
 .row, .xcol-md-7, .xcol-md-5 {
   border: 1px solid darkgrey;
   border-radius: 10px;
+}
+
+.alertMessage {
+  display: none;
 }

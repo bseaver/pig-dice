@@ -16,39 +16,38 @@
 
       <!-- Game Board on one row -->
       <div class="row">
+        <!-- First column -->
         <div class="col-md-7">
 
           <!-- Need To Know (NTK) Section -->
           <div class="row">
-            <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <h4 id="rollDice"></h4>
+                <h3 id="winnerMessage" class="alertMessage">WINNER!</h3>
+                <h3 id="bustedMessage" class="alertMessage">BUSTED!</h3>
+                <h3 id="heldMessage" class="alertMessage">Held</h3>
+              </div>
 
-              <h4 id="rollDice"></h4>
-              <h3 id="winnerMessage" class="alertMessage">WINNER!</h3>
-              <h3 id="bustedMessage" class="alertMessage">BUSTED!</h3>
-              <h3 id="heldMessage" class="alertMessage">Held</h3>
-              <!-- To Do: eliminate line below in favor of above lines -->
-              <span id="congratulations"></span>
+              <!-- Stats row inside of NTK -->
+              <div class="row">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Round Total</th>
+                      <th>Round Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="roundTotal"></td>
+                      <td id="rollCount"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> <!-- End Stats row -->
             </div>
-            <div class="row">
-
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Round Total</th>
-                    <th>Round Count</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td id="roundTotal"></td>
-                    <td id="rollCount"></td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- To Do: eliminate line below in favor of above lines -->
-              <h4 id="rollResult"></h4>
-            </div>
+            
           </div> <!-- End NTK Section -->
 
           <!-- Game Button Section -->
