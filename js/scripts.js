@@ -64,6 +64,10 @@ Game.prototype.startNewTurn = function() {
   this.rollCount = 0;
 }
 
+Game.prototype.didCurrentPlayerWin = function() {
+  return this.roundTotal + this.players[this.currentPlayer].totalScore >= 10;
+}
+
 var pigDice = new Game();
 pigDice.players.push(new Player());
 pigDice.currentPlayer = 0;
@@ -91,6 +95,8 @@ $(document).ready(function() {
     setDisplay();
     if (pigDice.turnEnded()) {
       pigDice.startNewTurn();
+    } else if (pigDice.didCurrentPlayerWin()) {
+      $("#congratulations").text("WINNER!");
     }
   });
 
