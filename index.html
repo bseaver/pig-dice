@@ -14,24 +14,56 @@
         <h2>Play Pig Dice!</h2>
       </div>
 
+      <!-- Game Board on one row -->
       <div class="row">
         <div class="col-md-7">
+
+          <!-- Need To Know (NTK) Section -->
           <div class="row">
-            <span id="congratulations"></span>
-            <h4 id="rollDice"></h4>
-            <h4 id="rollResult"></h4>
-          </div>
+            <div class="row">
+
+              <h4 id="rollDice"></h4>
+              <h3 id="winnerMessage" class="alertMessage">WINNER!</h3>
+              <h3 id="bustedMessage" class="alertMessage">BUSTED!</h3>
+              <h3 id="heldMessage" class="alertMessage">Held</h3>
+              <!-- To Do: eliminate line below in favor of above lines -->
+              <span id="congratulations"></span>
+            </div>
+            <div class="row">
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Round Total</th>
+                    <th>Round Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="roundData">
+                    <td>4</td>
+                    <td>1</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- To Do: eliminate line below in favor of above lines -->
+              <h4 id="rollResult"></h4>
+            </div>
+          </div> <!-- End NTK Section -->
+
+          <!-- Game Button Section -->
           <div class="row">
             <button class="btn btn-warning" id="holdButton" disabled="disabled" type="button">Hold</button>
             <button class="btn btn-danger" id="rollButton" disabled="disabled" type="button">Roll!</button>
             <button class="btn btn-primary" id="changePlayerButton" type="button">Click to Begin Player 1's Turn</button>
-          </div>
+          </div> <!-- End Game Button Section -->
         </div>
 
+        <!-- Player Stats Section -->
         <div class="col-md-5">
           <h4>Player Total Score: <span id="playerTotalScore"></span></h4>
-        </div>
-      </div>
+        </div> <!-- End Player Stats Section -->
+      </div> <!-- End Game Board -->
 
 
     </div>
