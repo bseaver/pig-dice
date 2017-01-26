@@ -36,15 +36,7 @@ Game.prototype.turnEnded = function() {
 }
 
 Game.prototype.playResult = function() {
-  var result;
-  if (this.isBusted) {
-    result = "Player is Busted!";
-  } else {
-    result =
-      "Player round total is: " + this.roundTotal +
-      " roll count is: " + this.rollCount;
-  }
-  return result;
+  return {roundTotal: this.roundTotal, rollCount: this.rollCount};
 }
 
 Game.prototype.showLastRoll = function() {
@@ -65,7 +57,7 @@ Game.prototype.startNewTurn = function() {
 }
 
 Game.prototype.didCurrentPlayerWin = function() {
-  return this.roundTotal + this.players[this.currentPlayer].totalScore >= 10;
+  return this.roundTotal + this.players[this.currentPlayer].totalScore >= 100;
 }
 
 var pigDice = new Game();
@@ -81,8 +73,10 @@ var rollOneDie  = function() {
 // Front End Logic
 function setDisplay() {
   $("#rollDice").text(pigDice.showLastRoll());
-  $("#rollResult").text(pigDice.playResult());
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
+  var roundStats = pigDice.playResult();
+  $("#roundTotal").text(roundStats.roundTotal);
+  $("#rollCount").text(roundStats.rollCount);
 }
 
 function toggleButtons() {
