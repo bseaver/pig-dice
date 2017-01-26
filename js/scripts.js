@@ -1,6 +1,6 @@
 // Business Logic
 function Player() {
-  this.totalScore = 0;
+  this.totalScore;
 }
 
 function Game() {
@@ -56,6 +56,13 @@ Game.prototype.startNewTurn = function() {
   this.rollCount = 0;
 }
 
+Game.prototype.startNewGame = function() {
+  this.players.forEach(function(player) {
+    player.totalScore = 0;
+  });
+  this.startNewTurn();
+}
+
 Game.prototype.didCurrentPlayerWin = function() {
   return this.roundTotal + this.players[this.currentPlayer].totalScore >= 100;
 }
@@ -71,6 +78,8 @@ var rollOneDie  = function() {
 
 
 // Front End Logic
+var startNewGame = false;
+
 function setDisplay() {
   $("#rollDice").text(pigDice.showLastRoll());
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
@@ -92,11 +101,16 @@ function toggleButtons() {
 }
 
 $(document).ready(function() {
-  pigDice.startNewTurn();
+  pigDice.startNewGame();
   setDisplay();
 
   $("#changePlayerButton").click(function() {
     toggleButtons();
+    if (startNewGame) {
+      startNewGame = false;
+      pigDice.startNewGame();
+    }
+    setDisplay();
   });
 
   $("#rollButton").click(function() {
@@ -105,8 +119,11 @@ $(document).ready(function() {
     setDisplay();
     if (pigDice.turnEnded()) {
       pigDice.startNewTurn();
+      toggleButtons();
     } else if (pigDice.didCurrentPlayerWin()) {
       $("#congratulations").text("WINNER!");
+      startNewGame = true;
+      toggleButtons();
     }
   });
 
