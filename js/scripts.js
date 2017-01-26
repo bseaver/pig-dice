@@ -85,9 +85,25 @@ function setDisplay() {
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
 }
 
+function toggleButtons() {
+  if ($("#rollButton").attr("disabled")) {
+    $("#rollButton").removeAttr("disabled");
+    $("#holdButton").removeAttr("disabled");
+  } else {
+    $("#rollButton").attr("disabled", "disabled");
+    $("#holdButton").attr("disabled", "disabled");
+  }
+
+  $("#changePlayerButton").toggle();
+}
+
 $(document).ready(function() {
   pigDice.startNewTurn();
   setDisplay();
+
+  $("#changePlayerButton").click(function() {
+    toggleButtons();
+  });
 
   $("#rollButton").click(function() {
     var rollValue = rollOneDie();
@@ -104,6 +120,7 @@ $(document).ready(function() {
     pigDice.holdHandler();
     pigDice.startNewTurn();
     setDisplay();
+    toggleButtons();
   });
 
 });
