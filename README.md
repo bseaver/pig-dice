@@ -13,6 +13,10 @@ _Pig Dice is a game for two or more players, each player takes turn rolling die,
 * _Clone repository_
 * _Open index.html_
 
+## See on GitHub.io
+[https://philip-putnam.github.io/pig-dice/](https://philip-putnam.github.io/pig-dice/)
+[https://bseaver.github.io/pig-dice/](https://bseaver.github.io/pig-dice/)
+
 ## Known Bugs
 
 _No known bugs_
@@ -34,6 +38,21 @@ _Bootstrap_
 Copyright (c) 2017 **_Benjamin T. Seaver & Philip Putnam_**
 
 ## Specifications
+
+### Phase 2: Improve UI for 2 player game
+
+* Top header goes into well
+* Play board is one row with 2 columns
+* First Column is divided in two rows
+* First row is Need To Know (NTK)
+* Second row is game play buttons
+* First row in NTK Section is alert window
+* Second row in NTK is table with 2 columns round total and round count
+* Second column on game board is player statistics
+* Player stats consist of a table of player rankings
+
+
+### Phase 1: Build up back end with minimal UI
 
 |  Behavior | Input | Output |
 | --------------|-------|--------|
