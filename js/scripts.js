@@ -3,13 +3,17 @@ function Player() {
   this.totalScore;
 }
 
-function Game() {
+function Game(scoreToWin, numberOfPlayers) {
+  this.scoreToWin = scoreToWin;
   this.players = [];
-  this.currentPlayer;
+  this.currentPlayer = 0;
   this.isBusted;
   this.lastRoll;
   this.roundTotal;
   this.rollCount;
+  for (var i = 0; i < numberOfPlayers; i++) {
+    this.players.push(new Player());
+  }
 }
 
 Game.prototype.showCurrentPlayerTotal = function() {
@@ -64,12 +68,9 @@ Game.prototype.startNewGame = function() {
 }
 
 Game.prototype.didCurrentPlayerWin = function() {
-  return this.roundTotal + this.players[this.currentPlayer].totalScore >= 100;
+  return this.roundTotal + this.players[this.currentPlayer].totalScore >= this.scoreToWin;
 }
 
-var pigDice = new Game();
-pigDice.players.push(new Player());
-pigDice.currentPlayer = 0;
 
 
 var rollOneDie  = function() {
@@ -78,6 +79,7 @@ var rollOneDie  = function() {
 
 
 // Front End Logic
+var pigDice = new Game(10, 1);
 var startNewGame = false;
 
 function setDisplay() {
