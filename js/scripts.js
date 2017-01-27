@@ -90,13 +90,23 @@ var pigDice = new Game(10, 1);
 
 function setDisplay(gameState) {
   $(".alertMessage").hide();
-  if (gameState.isBusted) {
-    $("#bustedMessage").show();
-  } else if (gameState.playerWon) {
-    $("#winnerMessage").show();
-  } else if (gameState.playerHeld) {
-    $("#heldMessage").show();
-  }
+  [
+    [gameState.isBusted, "#bustedMessage"],
+    [gameState.playerWon, "#winnerMessage"],
+    [gameState.playerHeld, "#heldMessage"]
+  ].forEach(function(gameStatePair) {
+    if (gameStatePair[0]) {
+      $(gameStatePair[1]).show();
+    }
+  });
+
+  // if (gameState.isBusted) {
+  //   $("#bustedMessage").show();
+  // } else if (gameState.playerWon) {
+  //   $("#winnerMessage").show();
+  // } else if (gameState.playerHeld) {
+  //   $("#heldMessage").show();
+  // }
 
   $("#lastRoll").text(gameState.lastRoll);
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
