@@ -8,6 +8,8 @@ function Game(scoreToWin, numberOfPlayers) {
   this.players = [];
   this.currentPlayer = 0;
   this.isBusted;
+  this.playerHeld;
+  this.playerWon;
   this.lastRoll;
   this.roundTotal;
   this.rollCount;
@@ -16,31 +18,31 @@ function Game(scoreToWin, numberOfPlayers) {
   }
 }
 
-Game.prototype.showCurrentPlayerTotal = function() {
-  return this.players[this.currentPlayer].totalScore;
-}
-
 Game.prototype.rollHandler = function(rollValue) {
   this.rollCount++;
   this.lastRoll = rollValue;
   if (this.lastRoll === 1) {
     this.isBusted = true;
-    this.roundTotal = 0;
   } else {
     this.roundTotal += this.lastRoll;
+    this.playerWon = this.roundTotal + this.players[this.currentPlayer].totalScore >= this.scoreToWin;
   }
 }
 
 Game.prototype.holdHandler = function() {
   this.players[this.currentPlayer].totalScore += this.roundTotal;
-}
-
-Game.prototype.turnEnded = function() {
-  return this.isBusted;
+  this.playerHeld = true;
 }
 
 Game.prototype.playResult = function() {
-  return {roundTotal: this.roundTotal, rollCount: this.rollCount};
+  return {
+    isBusted: this.isBusted,
+    playerHeld: this.playerHeld,
+    playerWon: this.playerWon,
+    lastRoll: this.lastRoll,
+    roundTotal: this.roundTotal,
+    rollCount: this.rollCount
+  };
 }
 
 Game.prototype.showLastRoll = function() {
@@ -55,6 +57,7 @@ Game.prototype.showLastRoll = function() {
 
 Game.prototype.startNewTurn = function() {
   this.isBusted = false;
+  this.playerHeld = false;
   this.lastRoll = "";
   this.roundTotal = 0;
   this.rollCount = 0;
@@ -64,11 +67,16 @@ Game.prototype.startNewGame = function() {
   this.players.forEach(function(player) {
     player.totalScore = 0;
   });
+  this.playerWon = false;
   this.startNewTurn();
 }
 
 Game.prototype.didCurrentPlayerWin = function() {
-  return this.roundTotal + this.players[this.currentPlayer].totalScore >= this.scoreToWin;
+  return this.playerWon;
+}
+
+Game.prototype.showCurrentPlayerTotal = function() {
+  return this.players[this.currentPlayer].totalScore;
 }
 
 var rollOneDie  = function() {
@@ -78,21 +86,24 @@ var rollOneDie  = function() {
 
 // Front End Logic
 var pigDice = new Game(10, 1);
-var startNewGame = false;
 
-function setDisplay() {
+
+function setDisplay(gameState) {
   $(".alertMessage").hide();
-  if (pigDice.turnEnded()) {
+  if (gameState.isBusted) {
     $("#bustedMessage").show();
-  } else if (pigDice.didCurrentPlayerWin()) {
+  } else if (gameState.playerWon) {
     $("#winnerMessage").show();
+  } else if (gameState.playerHeld) {
+    $("#heldMessage").show();
   }
-  $("#rollDice").text(pigDice.showLastRoll());
+
+  $("#lastRoll").text(gameState.lastRoll);
   $("#playerTotalScore").text(pigDice.showCurrentPlayerTotal());
-  var roundStats = pigDice.playResult();
-  $("#roundTotal").text(roundStats.roundTotal);
-  $("#rollCount").text(roundStats.rollCount);
+  $("#roundTotal").text(gameState.roundTotal);
+  $("#rollCount").text(gameState.rollCount);
 }
+
 
 function toggleButtons() {
   if ($("#rollButton").attr("disabled")) {
@@ -102,40 +113,45 @@ function toggleButtons() {
     $("#rollButton").attr("disabled", "disabled");
     $("#holdButton").attr("disabled", "disabled");
   }
-
   $("#changePlayerButton").toggle();
 }
 
+
 $(document).ready(function() {
   pigDice.startNewGame();
-  setDisplay();
+  var gameState = pigDice.playResult();
+  setDisplay(gameState);
 
   $("#changePlayerButton").click(function() {
-    toggleButtons();
-    if (startNewGame) {
-      startNewGame = false;
+    var gameState = pigDice.playResult();
+    if (gameState.playerWon) {
       pigDice.startNewGame();
     }
-    setDisplay();
+    if (gameState.playerHeld || gameState.isBusted) {
+      pigDice.startNewTurn();
+    }
+    gameState = pigDice.playResult();
+    setDisplay(gameState);
+    toggleButtons();
   });
+
 
   $("#rollButton").click(function() {
     var rollValue = rollOneDie();
     pigDice.rollHandler(rollValue);
-    setDisplay();
-    if (pigDice.turnEnded()) {
-      pigDice.startNewTurn();
-      toggleButtons();
-    } else if (pigDice.didCurrentPlayerWin()) {
-      startNewGame = true;
+    var gameState = pigDice.playResult();
+    setDisplay(gameState);
+    if (gameState.playerWon || gameState.playerHeld || gameState.isBusted) {
       toggleButtons();
     }
   });
 
+
   $("#holdButton").click(function() {
     pigDice.holdHandler();
+    var gameState = pigDice.playResult();
+    setDisplay(gameState);
     pigDice.startNewTurn();
-    setDisplay();
     toggleButtons();
   });
 
